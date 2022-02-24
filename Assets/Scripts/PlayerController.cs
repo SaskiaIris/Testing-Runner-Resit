@@ -13,7 +13,15 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private float jumpVelocity = 5.0f;
 
+	[SerializeField]
+	private string obstacleName = "Obstacle";
+	[SerializeField]
+	private string collectableName = "Collectable";
+
 	private bool canJump = true;
+
+	private int lives = 3;
+	private int marbles = 0;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -84,5 +92,21 @@ public class PlayerController : MonoBehaviour {
 		right++;
 
 		return new Vector3(right, transform.position.y, transform.position.z);
+	}
+
+	public void OnTriggerEnter(Collider other) {
+		if(other.CompareTag(obstacleName)) {
+			GameObject.Destroy(other.gameObject);
+			lives--;
+			Debug.Log("Lives:" + lives);
+			if(lives <= 0) {
+				Time.timeScale = 0;
+			}
+			
+		} else if(other.CompareTag(collectableName)) {
+			GameObject.Destroy(other.gameObject);
+			marbles++;
+			Debug.Log("Marbles: " + marbles);
+		}
 	}
 }
