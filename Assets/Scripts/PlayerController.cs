@@ -21,7 +21,10 @@ public class PlayerController : MonoBehaviour {
 	private bool canJump = true;
 
 	private int lives = 3;
-	private int marbles = 0;
+	private int presents = 0;
+
+	private float leftPos = -1.5f;
+	private float rightPos = 1.5f;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -30,9 +33,11 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		Debug.Log("grounded: " + controller.isGrounded);
+
 		moveVector = Vector3.zero;
 
-		if (controller.isGrounded) {
+		if(controller.isGrounded) {
 			verticalVelocity = -0.5f;
 			canJump = true;
 		} else {
@@ -41,9 +46,9 @@ public class PlayerController : MonoBehaviour {
 
 		//X = Left/Right
 		if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-			moveVector.x = -1;
+			moveVector.x = leftPos;
 		} else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-			moveVector.x = 1;
+			moveVector.x = rightPos;
 		}
 
 		if(Input.GetKeyDown(KeyCode.Space) && canJump) {
@@ -62,19 +67,27 @@ public class PlayerController : MonoBehaviour {
 		CheckWalls();
 	}
 
+	public int GetLives() {
+		return lives;
+	}
+
+	public int GetPresents() {
+		return presents;
+	}
+
 	public void CheckWalls() {
-		if (transform.position.x > -1 && transform.position.x <= -0.5) {
-			transform.position = new Vector3(-1, transform.position.y, transform.position.z);
-		} else if (transform.position.x > -0.5 && transform.position.x < 0) {
+		if (transform.position.x > leftPos && transform.position.x <= leftPos / 2) {
+			transform.position = new Vector3(leftPos, transform.position.y, transform.position.z);
+		} else if (transform.position.x > leftPos / 2 && transform.position.x < 0) {
 			transform.position = new Vector3(0, transform.position.y, transform.position.z);
-		} else if (transform.position.x > 0 && transform.position.x < 0.5) {
+		} else if (transform.position.x > 0 && transform.position.x < rightPos / 2) {
 			transform.position = new Vector3(0, transform.position.y, transform.position.z);
-		} else if (transform.position.x >= 0.5 && transform.position.x < 1) {
-			transform.position = new Vector3(1, transform.position.y, transform.position.z);
-		} else if (transform.position.x > 1) {
-			transform.position = new Vector3(1, transform.position.y, transform.position.z);
-		} else if (transform.position.x < -1) {
-			transform.position = new Vector3(-1, transform.position.y, transform.position.z);
+		} else if (transform.position.x >= rightPos / 2 && transform.position.x < rightPos) {
+			transform.position = new Vector3(rightPos, transform.position.y, transform.position.z);
+		} else if (transform.position.x > rightPos) {
+			transform.position = new Vector3(rightPos, transform.position.y, transform.position.z);
+		} else if (transform.position.x < leftPos) {
+			transform.position = new Vector3(leftPos, transform.position.y, transform.position.z);
 		}
 	}
 
@@ -105,8 +118,8 @@ public class PlayerController : MonoBehaviour {
 			
 		} else if(other.CompareTag(collectableName)) {
 			GameObject.Destroy(other.gameObject);
-			marbles++;
-			Debug.Log("Marbles: " + marbles);
+			presents++;
+			Debug.Log("Presents: " + presents);
 		}
 	}
 }
