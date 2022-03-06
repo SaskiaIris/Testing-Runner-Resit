@@ -19,11 +19,13 @@ public class GameValuesUI : MonoBehaviour {
     [SerializeField]
     private GameObject[] lives;
 
-    private float distance;
+    private float trueDistance;
+    private int distance;
     private int score;
 
     // Start is called before the first frame update
     void Start() {
+        trueDistance = 0;
         distance = 0;
         score = 0;
     }
@@ -43,15 +45,16 @@ public class GameValuesUI : MonoBehaviour {
         }
         presentsText.text = /*"Presents: " + */playerController.GetPresents().ToString();
 
-        distanceText.text = "Distance: " + Math.Round(distance);
-
+        distanceText.text = "Distance: " + distance;
+        scoreText.text = "Score: " + score;
     }
 
     void CalculateDistance() {
-        distance += playerController.GetSpeed() * Time.deltaTime;
+        trueDistance += playerController.GetSpeed() * Time.deltaTime;
+        distance = (int) Math.Round(trueDistance);
     }
 
     void CalculateScore() {
-
+        score = distance + playerController.GetPresents() * 50;
     }
 }
