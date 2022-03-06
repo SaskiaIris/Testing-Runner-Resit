@@ -13,8 +13,8 @@ public class GameValuesUI : MonoBehaviour {
     private Text livesText;*/
     [SerializeField]
     private Text presentsText;
-
-    public PlayerController playerController;
+    [SerializeField]
+    private PlayerController playerController;
 
     [SerializeField]
     private GameObject[] lives;
@@ -28,6 +28,14 @@ public class GameValuesUI : MonoBehaviour {
         trueDistance = 0;
         distance = 0;
         score = 0;
+    }
+
+    public int GetScore() {
+        return score;
+    }
+
+    public int GetDistance() {
+        return distance;
     }
 
     // Update is called once per frame

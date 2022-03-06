@@ -33,29 +33,38 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		Debug.Log("grounded: " + controller.isGrounded);
+		CheckGrounded();
 
+		CheckInput();
+
+		MoveCharacter();
 		moveVector = Vector3.zero;
+	}
 
+	private void CheckGrounded() {
 		if(controller.isGrounded) {
 			verticalVelocity = -0.5f;
 			canJump = true;
 		} else {
 			verticalVelocity -= gravity * Time.deltaTime;
 		}
+	}
 
+	private void CheckInput() {
 		//X = Left/Right
-		if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-			moveVector.x = leftPos;
-		} else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
-			moveVector.x = rightPos;
+		if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+			MoveToLeft();
+		} else if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
+			MoveToRight();
 		}
 
 		if(Input.GetKeyDown(KeyCode.Space) && canJump) {
 			verticalVelocity += jumpVelocity;
 			canJump = false;
 		}
+	}
 
+	private void MoveCharacter() {
 		//Y = Up/Down
 		moveVector.y = verticalVelocity * Time.deltaTime;
 
@@ -63,9 +72,17 @@ public class PlayerController : MonoBehaviour {
 		moveVector.z = speed * Time.deltaTime;
 
 		controller.Move(moveVector);
-
 		CheckWalls();
 	}
+
+	public void MoveToLeft() {
+		moveVector.x = leftPos;
+	}
+
+	public void MoveToRight() {
+		moveVector.x = rightPos;
+	}
+
 
 	public int GetLives() {
 		return lives;
@@ -79,7 +96,7 @@ public class PlayerController : MonoBehaviour {
 		return speed;
 	}
 
-	public void CheckWalls() {
+	private void CheckWalls() {
 		if (transform.position.x > leftPos && transform.position.x <= leftPos / 2) {
 			transform.position = new Vector3(leftPos, transform.position.y, transform.position.z);
 		} else if (transform.position.x > leftPos / 2 && transform.position.x < 0) {
@@ -93,22 +110,6 @@ public class PlayerController : MonoBehaviour {
 		} else if (transform.position.x < leftPos) {
 			transform.position = new Vector3(leftPos, transform.position.y, transform.position.z);
 		}
-	}
-
-	public Vector3 MoveLeft() {
-		float left = this.transform.position.x;
-
-		left--;
-
-		return new Vector3(left, transform.position.y, transform.position.z);
-	}
-
-	public Vector3 MoveRight() {
-		float right = transform.position.x;
-
-		right++;
-
-		return new Vector3(right, transform.position.y, transform.position.z);
 	}
 
 	public void OnTriggerEnter(Collider other) {
