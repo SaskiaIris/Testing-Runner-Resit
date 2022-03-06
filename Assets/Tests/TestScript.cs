@@ -13,6 +13,9 @@ public class TestScript {
 
 	private int expectedEndScore = 340;
 
+	private int startLives = 3;
+	private int expectedEndLives = 0;
+
 	[SetUp]
 	public void LoadScene() {
 		SceneManager.LoadScene(0);
@@ -38,5 +41,20 @@ public class TestScript {
 		yield return new WaitForSecondsRealtime(3.5f);
 
 		Assert.That(gameValues.GetScore() >= expectedEndScore);
+	}
+
+	[UnityTest]
+	public IEnumerator PlayerGameOver() {
+		player = GameObject.Find(playerGameObjectName).GetComponent<PlayerController>();
+
+		Assert.That(player.GetLives() == startLives);
+		Assert.That(Time.timeScale == 1.0);
+
+		yield return new WaitForSecondsRealtime(0.5f);
+		player.MoveToLeft();
+		yield return new WaitForSecondsRealtime(10f);
+
+		Assert.That(player.GetLives() == expectedEndLives);
+		Assert.That(Time.timeScale == 0f);
 	}
 }

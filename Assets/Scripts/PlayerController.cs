@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour {
 			lives--;
 			Debug.Log("Lives:" + lives);
 			if(lives <= 0) {
-				Time.timeScale = 0;
+				Time.timeScale = 0f;
 			}
 			
 		} else if(other.CompareTag(collectableName)) {
