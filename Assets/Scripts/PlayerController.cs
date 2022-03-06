@@ -75,6 +75,10 @@ public class PlayerController : MonoBehaviour {
 		return presents;
 	}
 
+	public float GetSpeed() {
+		return speed;
+	}
+
 	public void CheckWalls() {
 		if (transform.position.x > leftPos && transform.position.x <= leftPos / 2) {
 			transform.position = new Vector3(leftPos, transform.position.y, transform.position.z);

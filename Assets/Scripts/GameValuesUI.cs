@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,13 +19,20 @@ public class GameValuesUI : MonoBehaviour {
     [SerializeField]
     private GameObject[] lives;
 
+    private float distance;
+    private int score;
+
     // Start is called before the first frame update
     void Start() {
-        
+        distance = 0;
+        score = 0;
     }
 
     // Update is called once per frame
     void Update() {
+        CalculateDistance();
+        CalculateScore();
+
         //livesText.text = "Lives: " + playerController.GetLives();
         for(int i = 0; i < lives.Length; i++) {
             if(i >= playerController.GetLives()) {
@@ -34,6 +42,16 @@ public class GameValuesUI : MonoBehaviour {
             }
         }
         presentsText.text = /*"Presents: " + */playerController.GetPresents().ToString();
+
+        distanceText.text = "Distance: " + Math.Round(distance);
+
+    }
+
+    void CalculateDistance() {
+        distance += playerController.GetSpeed() * Time.deltaTime;
+    }
+
+    void CalculateScore() {
 
     }
 }
