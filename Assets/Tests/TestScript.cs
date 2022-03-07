@@ -12,8 +12,10 @@ public class TestScript {
 	private int expectedEndScore = 340;
 
 	private int startLives = 3;
+	private int startTimerStartValue = 3;
 	private int expectedEndLives = 0;
 	private int expectedEndPresents = 6;
+	private int startTimerGameOverValue = -5;
 
 	[SetUp]
 	public void LoadScene() {
@@ -26,29 +28,32 @@ public class TestScript {
 
 		Assert.That(player.GetScore() == 0);
 		Assert.That(player.GetPresents() == 0);
+		Assert.That(player.GetLives() == startLives);
 
 		//Wait for countdown
 		yield return new WaitForSecondsRealtime(3f);
 
-		yield return new WaitForSecondsRealtime(3f);
+		yield return new WaitForSecondsRealtime(2.7f);
 		player.MoveToLeft();
-		yield return new WaitForSecondsRealtime(0.5f);
+		yield return new WaitForSecondsRealtime(1f);
 		player.MoveToRight();
 		yield return new WaitForSecondsRealtime(0.05f);
 		player.MoveToRight();
 		yield return new WaitForSecondsRealtime(0.6f);
 		player.MoveToLeft();
-		yield return new WaitForSecondsRealtime(1.8f);
+		yield return new WaitForSecondsRealtime(1.7f);
 		player.MoveToRight();
 		yield return new WaitForSecondsRealtime(3.5f);
 
 		Assert.That(player.GetScore() >= expectedEndScore);
 		Assert.That(player.GetPresents() == expectedEndPresents);
+		Assert.That(player.GetLives() == startLives);
 	}
 
 	[UnityTest]
 	public IEnumerator PlayerGameOver() {
 		player = GameObject.Find(playerGameObjectName).GetComponent<PlayerController>();
+		Assert.That(player.GetStartTimerValue() == startTimerStartValue);
 
 		//Wait for countdown
 		yield return new WaitForSecondsRealtime(3f);
@@ -62,6 +67,7 @@ public class TestScript {
 
 		Assert.That(player.GetLives() == expectedEndLives);
 		Assert.That(Time.timeScale == 0f);
+		Assert.That(player.GetStartTimerValue() == startTimerGameOverValue);
 	}
 
 	[UnityTest]
