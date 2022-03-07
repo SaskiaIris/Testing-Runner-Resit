@@ -9175,7 +9175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3674800562863952920, guid: 55127cd477ea43947928f63f369064a7, type: 3}
       propertyPath: m_TagString
-      value: Obstacle
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7729645873977221889, guid: 55127cd477ea43947928f63f369064a7, type: 3}
       propertyPath: speed

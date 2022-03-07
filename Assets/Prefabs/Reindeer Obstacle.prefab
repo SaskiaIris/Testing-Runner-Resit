@@ -126,6 +126,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5149859230351452902, guid: 11c53011158264e7aa97bf5a5b0d9431, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e304a393fd183492aa2b7683b540265d, type: 2}
     - target: {fileID: 8763389586428500629, guid: 11c53011158264e7aa97bf5a5b0d9431, type: 3}
       propertyPath: m_Name
       value: Reindeer_2
