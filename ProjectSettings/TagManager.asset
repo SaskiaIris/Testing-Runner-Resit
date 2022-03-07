@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Collectable
+  - End
   layers:
   - Default
   - TransparentFX

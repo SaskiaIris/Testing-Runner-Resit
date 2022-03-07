@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
@@ -20,6 +21,8 @@ public class PlayerController : MonoBehaviour {
 	private string obstacleName = "Obstacle";
 	[SerializeField]
 	private string collectableName = "Collectable";
+	[SerializeField]
+	private string endName = "End";
 
 	private bool canJump;
 
@@ -195,6 +198,8 @@ public class PlayerController : MonoBehaviour {
 			GameObject.Destroy(other.gameObject);
 			presents++;
 			Debug.Log("Presents: " + presents);
+		} else if(other.CompareTag(endName)) {
+			SceneManager.LoadScene(0);
 		}
 	}
 }
