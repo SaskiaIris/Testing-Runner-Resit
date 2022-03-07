@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 	private CharacterController controller;
@@ -19,27 +21,61 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField]
 	private string collectableName = "Collectable";
 
-	private bool canJump = true;
+	private bool canJump;
 
-	private int lives = 3;
-	private int presents = 0;
+	private int lives;
+	private int presents;
+
+	private float trueDistance;
+	private int distance;
+	private int score;
 
 	private float leftPos = -1.5f;
 	private float rightPos = 1.5f;
 
+	private int startTimerValue;
+
 	// Start is called before the first frame update
 	void Start() {
+		startTimerValue = 3;
+		canJump = true;
+		lives = 3;
+		presents = 0;
+		trueDistance = 0;
+		distance = 0;
+		score = 0;
 		controller = GetComponent<CharacterController>();
+		StartCoroutine(StartTimer());
 	}
 
 	// Update is called once per frame
 	void Update() {
-		CheckGrounded();
+		CalculateDistance();
+		CalculateScore();
 
+		CheckGrounded();
 		CheckInput();
 
 		MoveCharacter();
 		moveVector = Vector3.zero;
+	}
+
+	private IEnumerator StartTimer() {
+		Time.timeScale = 0;
+		startTimerValue = 3;
+		yield return new WaitForSecondsRealtime(1f);
+		startTimerValue = 2;
+		yield return new WaitForSecondsRealtime(1f);
+		startTimerValue = 1;
+		yield return new WaitForSecondsRealtime(1f);
+		Time.timeScale = 1.0f;
+		startTimerValue = 0;
+		yield return new WaitForSecondsRealtime(0.5f);
+		startTimerValue = -1;
+	}
+
+	public int GetStartTimerValue() {
+		return startTimerValue;
 	}
 
 	private void CheckGrounded() {
@@ -93,8 +129,12 @@ public class PlayerController : MonoBehaviour {
 		return presents;
 	}
 
-	public float GetSpeed() {
-		return speed;
+	public int GetScore() {
+		return score;
+	}
+
+	public int GetDistance() {
+		return distance;
 	}
 
 	private void CheckWalls() {
@@ -121,18 +161,31 @@ public class PlayerController : MonoBehaviour {
 		Time.timeScale = 1.0f;
 	}
 
+	private void GameOver() {
+		Time.timeScale = 0f;
+		startTimerValue = -5;
+	}
+
 	public void LoseLife() {
 		lives--;
 
 		/*Debug.Log("Lives:" + lives);*/
 
 		if(lives <= 0) {
-			Time.timeScale = 0f;
+			GameOver();
 		} else {
 			StartCoroutine(SlowMotion());
 		}
 	}
 
+	void CalculateDistance() {
+		trueDistance += speed * Time.deltaTime;
+		distance = (int) Math.Round(trueDistance);
+	}
+
+	void CalculateScore() {
+		score = distance + presents * 50;
+	}
 
 	public void OnTriggerEnter(Collider other) {
 		if(other.CompareTag(obstacleName)) {
