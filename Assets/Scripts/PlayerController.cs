@@ -53,13 +53,15 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		CalculateDistance();
-		CalculateScore();
+		if(Time.timeScale != 0f) {
+			CalculateDistance();
+			CalculateScore();
 
-		CheckGrounded();
-		CheckInput();
+			CheckGrounded();
+			CheckInput();
 
-		MoveCharacter();
+			MoveCharacter();
+		}
 		moveVector = Vector3.zero;
 	}
 
@@ -167,6 +169,12 @@ public class PlayerController : MonoBehaviour {
 	private void GameOver() {
 		Time.timeScale = 0f;
 		startTimerValue = -5;
+		StartCoroutine(Respawn());
+	}
+
+	private IEnumerator Respawn() {
+		yield return new WaitForSecondsRealtime(0.5f);
+		SceneManager.LoadScene(0);
 	}
 
 	public void LoseLife() {
@@ -197,7 +205,7 @@ public class PlayerController : MonoBehaviour {
 		} else if(other.CompareTag(collectableName)) {
 			GameObject.Destroy(other.gameObject);
 			presents++;
-			Debug.Log("Presents: " + presents);
+			/*Debug.Log("Presents: " + presents);*/
 		} else if(other.CompareTag(endName)) {
 			SceneManager.LoadScene(0);
 		}

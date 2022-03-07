@@ -71,7 +71,7 @@ public class TestScript {
 
 		yield return new WaitForSecondsRealtime(0.5f);
 		player.MoveToLeft();
-		yield return new WaitForSecondsRealtime(10f);
+		yield return new WaitForSecondsRealtime(8f);
 
 		Assert.That(player.GetLives() == expectedEndLives);
 		Assert.That(Time.timeScale == 0f);
