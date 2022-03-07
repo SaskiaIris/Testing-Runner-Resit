@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator SlowMotion() {
+	private IEnumerator SlowMotion() {
 		Time.timeScale = 0.15f;
 		yield return new WaitForSecondsRealtime(0.6f);
 		Time.timeScale = 0.6f;
@@ -121,18 +121,23 @@ public class PlayerController : MonoBehaviour {
 		Time.timeScale = 1.0f;
 	}
 
+	public void LoseLife() {
+		lives--;
+
+		/*Debug.Log("Lives:" + lives);*/
+
+		if(lives <= 0) {
+			Time.timeScale = 0f;
+		} else {
+			StartCoroutine(SlowMotion());
+		}
+	}
+
 
 	public void OnTriggerEnter(Collider other) {
 		if(other.CompareTag(obstacleName)) {
 			GameObject.Destroy(other.gameObject);
-			lives--;
-			/*Debug.Log("Lives:" + lives);*/
-			if(lives <= 0) {
-				Time.timeScale = 0f;
-			} else {
-				StartCoroutine(SlowMotion());
-			}
-			
+			LoseLife();
 		} else if(other.CompareTag(collectableName)) {
 			GameObject.Destroy(other.gameObject);
 			presents++;

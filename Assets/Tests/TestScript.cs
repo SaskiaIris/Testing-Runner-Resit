@@ -57,4 +57,19 @@ public class TestScript {
 		Assert.That(player.GetLives() == expectedEndLives);
 		Assert.That(Time.timeScale == 0f);
 	}
+
+	[UnityTest]
+	public IEnumerator SlowDownWhenLifeLost() {
+		player = GameObject.Find(playerGameObjectName).GetComponent<PlayerController>();
+
+		Assert.That(player.GetLives() == startLives);
+		Assert.That(Time.timeScale == 1.0);
+
+		yield return new WaitForSecondsRealtime(0.5f);
+		player.LoseLife();
+		Assert.That(player.GetLives() == startLives - 1);
+		Assert.That(Time.timeScale < 1.0f && Time.timeScale > 0.0f);
+	}
+
+
 }
